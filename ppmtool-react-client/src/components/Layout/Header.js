@@ -81,6 +81,7 @@ class Header extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
+
           {headerLinks}
         </div>
       </nav>
@@ -90,14 +91,11 @@ class Header extends Component {
 
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
-  security: PropTypes.object.isRequired
+  security: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  security: state.security
+const mapStateToProps = (state) => ({
+  security: state.security,
 });
 
-export default connect(
-  mapStateToProps,
-  { logout }
-)(Header);
+export default connect(mapStateToProps, { logout })(Header);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ProjectItem from "./Project/ProjectItem";
 import CreateProjectButton from "./Project/CreateProjectButton";
+import { CreateTeamUserButton } from "./UserManagement/CreateTeamUserButton";
 import { connect } from "react-redux";
 import { getProjects } from "../actions/projectActions";
 import PropTypes from "prop-types";
@@ -21,7 +22,7 @@ class Dashboard extends Component {
               <h1 className="display-4 text-center">Projects</h1>
               <br />
               <CreateProjectButton />
-
+              <CreateTeamUserButton/>
               <br />
               <hr />
               {projects.map(project => (

@@ -10,6 +10,7 @@ import store from "./store";
 import UpdateProject from "./components/Project/UpdateProject";
 import ProjectBoard from "./components/ProjectBoard/ProjectBoard";
 import AddProjectTask from "./components/ProjectBoard/ProjectTasks/AddProjectTask";
+import addTeamMember from "./components/UserManagement/CreateTeamUser";
 import UpdateProjectTask from "./components/ProjectBoard/ProjectTasks/UpdateProjectTask";
 import Landing from "./components/Layout/Landing";
 import Register from "./components/UserManagement/Register";
@@ -18,6 +19,7 @@ import jwt_decode from "jwt-decode";
 import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
 import { logout } from "./actions/securityActions";
+import CreateTeamUser from "./components/UserManagement/CreateTeamUser";
 
 const jwtToken = localStorage.jwtToken;
 
@@ -26,7 +28,7 @@ if (jwtToken) {
   const decoded_jwtToken = jwt_decode(jwtToken);
   store.dispatch({
     type: SET_CURRENT_USER,
-    payload: decoded_jwtToken
+    payload: decoded_jwtToken,
   });
 
   const currentTime = Date.now() / 1000;
@@ -55,6 +57,7 @@ class App extends Component {
               //Private Routes
             }
             <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/createTeamUser" component={CreateTeamUser} />
             <Route exact path="/addProject" component={AddProject} />
             <Route exact path="/updateProject/:id" component={UpdateProject} />
             <Route exact path="/projectBoard/:id" component={ProjectBoard} />
