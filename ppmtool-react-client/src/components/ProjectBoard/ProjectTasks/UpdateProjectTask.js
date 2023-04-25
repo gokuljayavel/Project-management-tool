@@ -7,11 +7,12 @@ import {
   updateProjectTask
 } from "../../../actions/backlogActions";
 import PropTypes from "prop-types";
+import axios from 'axios';
 
 class UpdateProjectTask extends Component {
   constructor() {
     super();
-
+  
     this.state = {
       id: "",
       projectSequence: "",
@@ -22,15 +23,43 @@ class UpdateProjectTask extends Component {
       dueDate: "",
       projectIdentifier: "",
       create_At: "",
-      errors: {}
+      errors: {},
+      storyType:"", 
+      user_id: "",
+      membersList: [],
+      isAllTeam:false,
+      curr_id:""
+      
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+   
   }
 
   componentDidMount() {
     const { backlog_id, pt_id } = this.props.match.params;
     this.props.getProjectTask(backlog_id, pt_id, this.props.history);
+
+    const fetchData = async () => {
+      const id = localStorage.getItem("mgr_id");
+      const response = await axios.get(`/api/users/${id}`);
+      console.log(response.data);
+      this.setState({ membersList: response.data });
+    };
+    fetchData();
+
+    let mgr_id = localStorage.getItem("mgr_id")
+    let id = localStorage.getItem("id")
+    this.setState({curr_id: id})
+
+    if(mgr_id == id){
+      this.setState({isAllTeam: true})
+    }
+    else{
+      this.setState({isAllTeam: false})
+    }
+
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,6 +67,8 @@ class UpdateProjectTask extends Component {
       this.setState({ errors: nextProps.errors });
     }
 
+ 
+   
     const {
       id,
       projectSequence,
@@ -47,7 +78,9 @@ class UpdateProjectTask extends Component {
       priority,
       dueDate,
       projectIdentifier,
-      create_At
+      create_At,
+      storyType,
+      user_id,
     } = nextProps.project_task;
 
     this.setState({
@@ -59,9 +92,16 @@ class UpdateProjectTask extends Component {
       priority,
       dueDate,
       projectIdentifier,
-      create_At
+      create_At,
+      storyType,
+      user_id,
     });
   }
+
+  
+
+
+
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -79,7 +119,9 @@ class UpdateProjectTask extends Component {
       priority: this.state.priority,
       dueDate: this.state.dueDate,
       projectIdentifier: this.state.projectIdentifier,
-      create_At: this.state.create_At
+      create_At: this.state.create_At,
+      storyType:this.state.storyType,
+      user_id: this.state.user_id
     };
 
     // console.log(UpdateProjectTask);
@@ -91,10 +133,13 @@ class UpdateProjectTask extends Component {
     );
   }
 
+  
+
   render() {
     const { errors } = this.state;
     return (
       <div className="add-PBI">
+      
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -171,6 +216,49 @@ class UpdateProjectTask extends Component {
                     <option value="DONE">DONE</option>
                   </select>
                 </div>
+
+                <div className="form-group">
+                <select
+                  className="form-control form-control-lg"
+                  name="storyType"
+                  value={this.state.storyType}
+                  onChange={this.onChange}
+                >
+                  <option value="">Select Story Type</option>
+                  <option value="Dev">Development Story</option>
+                  <option value="Test">Test Story</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+              <select
+                className="form-control form-control-lg"
+                name="user_id"
+                value={this.state.user_id}
+                onChange={this.onChange}
+              >
+              <option value="">Select Asigned to</option>
+
+
+              { this.state.isAllTeam ? (this.state.membersList.map((member) => (
+                (<option key={member.id} value={member.id}>
+                  {member.fullName}
+                </option>))
+              )) : (
+
+                this.state.membersList.map((member) => 
+                  {
+                    if (member.id==this.state.curr_id || this.state.user_id == member.id)
+                    return (
+                    <option key={member.id} value={member.id}>
+                    {member.fullName}
+                  </option>)
+                })
+                
+              ) }
+                
+              </select>
+            </div>
 
                 <input
                   type="submit"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { createProject } from "../../actions/projectActions";
+import { createProject,addProjects } from "../../actions/projectActions";
 import classnames from "classnames";
 
 class AddProject extends Component {
@@ -41,7 +41,9 @@ class AddProject extends Component {
       start_date: this.state.start_date,
       end_date: this.state.end_date
     };
-    this.props.createProject(newProject, this.props.history);
+   // this.props.createProject(newProject, this.props.history);
+    var id = localStorage.getItem("id")
+    this.props.addProjects(id, this.props.history,newProject);
   }
 
   render() {
@@ -126,6 +128,15 @@ class AddProject extends Component {
                       onChange={this.onChange}
                     />
                   </div>
+                  <div className="form-group">
+                    <input
+                      type=""
+                      className="form-control form-control-lg"
+                      name="end_date"
+                      value={this.state.end_date}
+                      onChange={this.onChange}
+                    />
+                  </div>
 
                   <input
                     type="submit"
@@ -142,7 +153,8 @@ class AddProject extends Component {
 }
 
 AddProject.propTypes = {
-  createProject: PropTypes.func.isRequired,
+ // createProject: PropTypes.func.isRequired,
+ addProjects: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };
 
@@ -152,5 +164,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createProject }
+  { createProject , addProjects}
 )(AddProject);

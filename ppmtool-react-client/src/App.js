@@ -20,6 +20,7 @@ import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
 import { logout } from "./actions/securityActions";
 import CreateTeamUser from "./components/UserManagement/CreateTeamUser";
+import {ViewTeamMembers} from "./components/UserManagement/ViewTeamMembers.js"
 
 const jwtToken = localStorage.jwtToken;
 
@@ -58,6 +59,7 @@ class App extends Component {
             }
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/createTeamUser" component={CreateTeamUser} />
+            <Route exact path="/viewTeamMembers" component={ViewTeamMembers} />
             <Route exact path="/addProject" component={AddProject} />
             <Route exact path="/updateProject/:id" component={UpdateProject} />
             <Route exact path="/projectBoard/:id" component={ProjectBoard} />

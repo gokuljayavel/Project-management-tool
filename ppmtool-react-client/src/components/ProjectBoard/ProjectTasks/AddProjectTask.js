@@ -17,7 +17,8 @@ class AddProjectTask extends Component {
       priority: 0,
       dueDate: "",
       projectIdentifier: id,
-      errors: {}
+      errors: {},
+      storyType:""
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -42,7 +43,8 @@ class AddProjectTask extends Component {
       acceptanceCriteria: this.state.acceptanceCriteria,
       status: this.state.status,
       priority: this.state.priority,
-      dueDate: this.state.dueDate
+      dueDate: this.state.dueDate,
+      storyType: this.state.storyType
     };
 
     this.props.addProjectTask(
@@ -125,6 +127,19 @@ class AddProjectTask extends Component {
                     <option value="TO_DO">TO DO</option>
                     <option value="IN_PROGRESS">IN PROGRESS</option>
                     <option value="DONE">DONE</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <select
+                    className="form-control form-control-lg"
+                    name="storyType"
+                    value={this.state.storyType}
+                    onChange={this.onChange}
+                  >
+                    <option value="">Select Story Type</option>
+                    <option value="Dev">Development Story</option>
+                    <option value="Test">Test Story</option>
                   </select>
                 </div>
 

@@ -27,15 +27,31 @@ export const getProjects = () => async dispatch => {
 
 export const getProject = (id, history) => async dispatch => {
   try {
+    
     const res = await axios.get(`/api/project/${id}`);
     dispatch({
       type: GET_PROJECT,
       payload: res.data
     });
   } catch (error) {
-    history.push("/dashboard");
+    history.push("/login");
   }
 };
+
+export const getProjectDetail = (id, history) => async dispatch => {
+  try {
+    
+    const res = await axios.get(`/api/project/projectid/${id}`);
+    dispatch({
+      type: GET_PROJECT,
+      payload: res.data
+    });
+  } catch (error) {
+    history.push("/login");
+  }
+};
+
+
 
 export const deleteProject = id => async dispatch => {
   if (
@@ -48,5 +64,23 @@ export const deleteProject = id => async dispatch => {
       type: DELETE_PROJECT,
       payload: id
     });
+  }
+};
+
+export const addProjects = (id, history,project) => async dispatch => {
+  try {
+    
+    const res = await axios.post(`/api/project/${id}`,project);
+    history.push("/dashboard");
+    dispatch({
+      type: GET_ERRORS,
+      payload: {}
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data
+    });
+   // history.push("/login");
   }
 };

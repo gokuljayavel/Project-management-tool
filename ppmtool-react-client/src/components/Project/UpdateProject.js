@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getProject, createProject } from "../../actions/projectActions";
+import { getProject, getProjectDetail,createProject,addProjects } from "../../actions/projectActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
@@ -47,7 +47,7 @@ class UpdateProject extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getProject(id, this.props.history);
+    this.props.getProjectDetail(id, this.props.history);
   }
 
   onChange(e) {
@@ -66,7 +66,9 @@ class UpdateProject extends Component {
       end_date: this.state.end_date
     };
 
-    this.props.createProject(updateProject, this.props.history);
+    //this.props.createProject(updateProject, this.props.history);
+    var id = localStorage.getItem("id")
+    this.props.addProjects(id, this.props.history,updateProject);
   }
 
   render() {
@@ -154,9 +156,10 @@ class UpdateProject extends Component {
 }
 
 UpdateProject.propTypes = {
-  getProject: PropTypes.func.isRequired,
+  getProjectDetail: PropTypes.func.isRequired,
   createProject: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
+  addProjects: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };
 
@@ -167,5 +170,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getProject, createProject }
+  { getProjectDetail, createProject,addProjects }
 )(UpdateProject);

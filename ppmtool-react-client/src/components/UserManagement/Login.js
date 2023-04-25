@@ -38,7 +38,7 @@ class Login extends Component {
       username: this.state.username,
       password: this.state.password,
     };
-
+    console.log("beofre login call")
     this.props.login(LoginRequest);
   }
 

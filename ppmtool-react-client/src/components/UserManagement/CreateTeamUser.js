@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import { createNewUser } from "../..//actions/securityActions.js";
+import { addTeamMember } from "../..//actions/securityActions.js";
 import axios from "axios";
+import { connect } from "react-redux";
 
-export default function CreateTeamUser(props) {
+function CreateTeamUser(props) {
   const initial = {
     username: "",
     fullName: "",
@@ -25,6 +26,7 @@ export default function CreateTeamUser(props) {
 
   const onFullNameChange = (e) => {
     setInputValue({ ...inputValue, fullName: e.target.value });
+    
   };
 
   const onPasswordChange = (e) => {
@@ -77,8 +79,11 @@ export default function CreateTeamUser(props) {
         ...validationErrors,
       });
 
-      let result = await axios.post("/api/users/register", inputValue);
-      props.history.push("/dashboard");
+  
+      console.log(inputValue)
+      const id = props.security.user.id
+      props.addTeamMember(inputValue, props.history, id)
+   
     }
   };
 
@@ -110,8 +115,8 @@ export default function CreateTeamUser(props) {
           <label>Role</label>
           <select onChange={onRoleChange}>
             <option value="None">Select One</option>
-            <option value="option1">Developer</option>
-            <option value="option2">Tester</option>
+            <option value="Developer">Developer</option>
+            <option value="Tester">Tester</option>
           </select>
           <p>{errors.role}</p>
         </div>
@@ -123,3 +128,9 @@ export default function CreateTeamUser(props) {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  security: state.security,
+});
+
+export default connect(mapStateToProps, { addTeamMember })(CreateTeamUser);
